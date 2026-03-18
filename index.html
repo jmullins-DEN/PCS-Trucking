@@ -55,13 +55,7 @@ html, body { background: #0f1f3d; color: #e8edf5; font-family: 'Barlow', sans-se
 .uphint { font-size: 11px; color: #7a94b4; }
 .upbtn { background: #e8a020; color: #0f1f3d; border: none; border-radius: 8px; padding: 13px 24px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; width: 100%; }
 .upst { font-size: 11px; color: #3db87a; text-align: center; margin-top: 8px; display: none; }
-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-th { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #7a94b4; padding: 6px 8px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.08); }
-td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; }
-tr.drv-row { cursor: pointer; transition: background 0.15s; }
-tr.drv-row:hover td { background: rgba(232,160,32,0.08); }
-.badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 600; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.5px; }
-#clearBtn { background: rgba(224,82,82,0.15); color: #e05252; border: 1px solid rgba(224,82,82,0.3); border-radius: 8px; padding: 10px 24px; font-family: "Barlow Condensed", sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; width: 100%; }
+#clearBtn { background: rgba(224,82,82,0.15); color: #e05252; border: 1px solid rgba(224,82,82,0.3); border-radius: 8px; padding: 10px 24px; font-family: "Barlow Condensed", sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; width: 100%; margin-top: 10px; }
 @media (min-width: 768px) {
   .upzone { flex-direction: row; text-align: left; }
   .upbtn { width: auto; margin-left: auto; }
@@ -69,6 +63,7 @@ tr.drv-row:hover td { background: rgba(232,160,32,0.08); }
 </style>
 </head>
 <body>
+
 <div id="loadErr" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#e05252;color:#fff;padding:20px;border-radius:10px;font-family:sans-serif;z-index:9999;text-align:center;max-width:400px;"></div>
 
 <header class="header">
@@ -80,28 +75,28 @@ tr.drv-row:hover td { background: rgba(232,160,32,0.08); }
 <div class="page">
   <div class="kpis">
     <div class="kpi k1"><div class="klbl">Total Coached Events</div><div class="kval" id="kT">--</div><div class="ksub" id="kpiDateRange">Last <b>30 days</b></div></div>
-    <div class="kpi k2"><div class="klbl">Unviewed Coached</div><div class="kval" id="kU">--</div><div class="ksub" id="kVR">viewing rate</div></div>
+    <div class="kpi k2"><div class="klbl">Viewed</div><div class="kval" id="kU" style="font-size:44px;">--</div><div class="ksub" id="kVR">viewing rate</div></div>
     <div class="kpi k3"><div class="klbl">Avg Events / Driver</div><div class="kval" id="kA">--</div><div class="ksub" id="kAS">active drivers</div></div>
-    <div class="kpi k4"><div class="klbl">Most Common Event</div><div class="kval" id="kMC">--</div><div class="ksub" id="kMT">--</div></div>
+    <div class="kpi k4"><div class="klbl">Most Common Event</div><div class="kval" id="kMC" style="font-size:28px;padding-top:6px;line-height:1.2;">--</div><div class="ksub" id="kMT">--</div></div>
   </div>
 
   <div class="card" style="padding:12px 16px;">
     <div class="filter-bar" id="filterBar">
       <span style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:#7a94b4;margin-right:4px;">Filter:</span>
       <button class="filter-btn active" data-filter="all">All Events</button>
-      <button class="filter-btn" data-filter="Coached">&#10003; Coached</button>
+      <button class="filter-btn" data-filter="Coached">&#10003; Viewed</button>
       <button class="filter-btn" data-filter="Needs Coaching">&#9888; Unviewed</button>
     </div>
   </div>
 
   <div class="charts-row">
-    <div class="card"><div class="ctitle">Events Over Time</div><div id="barWrap"></div></div>
+    <div class="card"><div class="ctitle">Events Over Time (Weekly)</div><div id="barWrap"></div></div>
     <div class="card"><div class="ctitle">Events by Type</div><div id="donutWrap"></div></div>
   </div>
 
   <div class="bottom-row">
-    <div class="card"><div class="ctitle">Events by Driver</div><div id="drvWrap"><p style="text-align:center;padding:24px;color:#7a94b4;font-size:12px;">Import a file to see data</p></div></div>
-    <div class="card"><div class="ctitle">Recent Event Log</div><div class="elog" id="evLog"><p style="text-align:center;padding:24px;color:#7a94b4;font-size:12px;">Import a file to see events</p></div></div>
+    <div class="card"><div class="ctitle">Events by Driver</div><div id="drvWrap"></div></div>
+    <div class="card"><div class="ctitle">Recent Event Log</div><div class="elog" id="evLog"></div></div>
   </div>
 </div>
 
@@ -134,64 +129,479 @@ tr.drv-row:hover td { background: rgba(232,160,32,0.08); }
 <div class="upwrap">
   <div class="upst" id="upSt"></div>
   <div style="text-align:center;padding:8px 0;">
-    <button id="adminUnlockBtn" style="background:none;border:none;cursor:pointer;color:#7a94b4;font-size:11px;letter-spacing:1px;text-transform:uppercase;opacity:0.4;" title="Admin access">&#128274; ADMIN</button>
+    <button id="adminUnlockBtn" style="background:none;border:none;cursor:pointer;color:#7a94b4;font-size:11px;letter-spacing:1px;text-transform:uppercase;opacity:0.4;" title="Admin access">&#128274; Admin</button>
   </div>
   <div id="adminPanel" style="display:none;">
     <div class="upzone" id="upZ">
       <input type="file" id="fileIn" accept=".xlsx,.xls,.csv"/>
       <div class="upico">&#128194;</div>
-      <div><div class="uptitle">Import Camera Event File</div><div class="uphint">Netradyne .xlsx — auto-filters to last 30 days</div></div>
+      <div><div class="uptitle">Import Camera Event File</div><div class="uphint">Netradyne .xlsx &#8212; auto-filters to last 30 days</div></div>
       <button class="upbtn" id="uploadBtn">Upload File</button>
     </div>
-    <button id="clearBtn" style="margin-top:10px;">Clear All Data</button>
+    <button id="clearBtn">Clear All Data</button>
   </div>
 </div>
 
 <script>
 
 
-function showDriverModal(name){
-  var devts=allFilteredEvts.filter(function(e){return e.Driver===name;});
-  if(!devts.length)return;
-  document.getElementById('modalDriverName').textContent=name;
-  var tct={},total=devts.length,viewed=0,coached=0;
-  devts.forEach(function(e){
-    if(e.Type)tct[e.Type]=(tct[e.Type]||0)+1;
-    var cv=e['Converted To Coaching'];
-    if(cv==='YES'||cv==='Yes'){coached++;if(e['Coaching Completed At'])viewed++;}
-  });
-  var sbox='background:rgba(255,255,255,0.04);border-radius:8px;padding:10px;text-align:center;';
-  var slbl='font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:#7a94b4;margin-bottom:4px;';
-  var sval='font-family:sans-serif;font-size:28px;font-weight:900;';
-  var viewedPct=coached>0?Math.round(viewed/coached*100):0;
-  var sc=[{lbl:'Total',val:total,col:'#e8a020'},{lbl:'Coached',val:coached,col:'#3db87a'},{lbl:'Viewed %',val:viewedPct+'%',col:'#5b8dee'}];
-  document.getElementById('modalStats').innerHTML=sc.map(function(s){
-    return '<div style="'+sbox+'"><div style="'+slbl+'">'+s.lbl+'</div><div style="'+sval+'color:'+s.col+';">'+s.val+'</div></div>';
-  }).join('');
-  var types=Object.keys(tct).sort(function(a,b){return tct[b]-tct[a];});
-  var maxT=types.length?tct[types[0]]:1;
-  var bh='<div style="display:flex;flex-direction:column;gap:6px;">';
-  types.forEach(function(t){
-    var w=Math.round(tct[t]/maxT*100);
-    bh+='<div><div style="display:flex;justify-content:space-between;font-size:10px;color:#7a94b4;margin-bottom:3px;"><span>'+getLabel(t)+'</span><span style="color:#fff;">'+tct[t]+'</span></div>'
-       +'<div style="background:rgba(255,255,255,0.05);border-radius:3px;height:5px;"><div style="background:'+getColor(t)+';width:'+w+'%;height:100%;border-radius:3px;"></div></div></div>';
-  });
-  bh+='</div>';
-  document.getElementById('modalBreakdown').innerHTML=bh;
-  var rh='';
-  devts.slice(0,8).forEach(function(e){
-    var ds=e._d?e._d.toLocaleDateString('en-US',{month:'short',day:'numeric'}):'';
-    rh+='<div style="display:flex;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:11px;">'
-       +'<div style="width:6px;height:6px;border-radius:50%;background:'+getColor(e.Type||'')+';flex-shrink:0;margin-top:3px;"></div>'
-       +'<div style="flex:1;"><div style="font-weight:600;">'+getLabel(e.Type||'Unknown')+'</div>'
-       +'<div style="color:#7a94b4;">'+ds+'</div></div></div>';
-  });
-  document.getElementById('modalEvents').innerHTML=rh;
-  document.getElementById('driverModal').style.display='flex';
+// ============================================================
+// CLIENT CONFIGURATION — edit these two lines for each client
+// ============================================================
+var CLIENT_NAME = 'PCS Trucking';
+var GITHUB_URL   = 'https://raw.githubusercontent.com/jmullins-DEN/PCS-Trucking/main/camera_events.xlsx';
+// ============================================================
+
+var TC={'HARSH-BRAKE':'#e05252','HARSH_BRAKE':'#e05252','HARD-BRAKING':'#e05252','HARD_BRAKING':'#e05252','SIGN-VIOLATION':'#f5a623','SIGN_VIOLATION':'#f5a623','SIGN-VIOLATIONS':'#f5a623','SIGN_VIOLATIONS':'#f5a623','FOLLOWING-DISTANCE':'#5b8dee','FOLLOWING_DISTANCE':'#5b8dee','AGGREGATED_LANE_SWERVING':'#e056d6','AGGREGATED-LANE-SWERVING':'#e056d6','LANE-DEPARTURE':'#9b59b6','LANE_DEPARTURE':'#9b59b6','FORWARD-CAMERA-OBSTRUCTION':'#7a94b4','FORWARD_CAMERA_OBSTRUCTION':'#7a94b4','BACKING':'#e8943a','BACKING_EVENT':'#e8943a','DRIVER-DROWSINESS':'#8e5ea2','DRIVER_DROWSINESS':'#8e5ea2','DRIVER-DISTRACTION':'#c0392b','DRIVER_DISTRACTION':'#c0392b','SPEEDING-VIOLATIONS':'#e74c3c','SPEEDING_VIOLATIONS':'#e74c3c','SPEEDING-VIOLATION':'#e74c3c','SPEEDING_VIOLATION':'#e74c3c','HARD-TURN':'#16a085','HARD_TURN':'#16a085','TRAFFIC-LIGHT-VIOLATION':'#d35400','TRAFFIC_LIGHT_VIOLATION':'#d35400','DRIVER-STAR':'#f1c40f','DRIVER_STAR':'#f1c40f'};
+var FALLBACK_COLORS=['#e05252','#f5a623','#5b8dee','#e056d6','#9b59b6','#7a94b4','#3db87a','#f5d76e'];
+var colorCache={};var colorIdx=0;
+function getColor(type){
+  if(TC[type])return TC[type];
+  var up=String(type).toUpperCase().replace(/ /g,'-');
+  if(TC[up])return TC[up];
+  if(!colorCache[type]){colorCache[type]=FALLBACK_COLORS[colorIdx%FALLBACK_COLORS.length];colorIdx++;}
+  return colorCache[type];
+}
+var TL={'HARSH-BRAKE':'Harsh Brake','HARSH_BRAKE':'Harsh Brake','HARD-BRAKING':'Hard Braking','HARD_BRAKING':'Hard Braking','SIGN-VIOLATION':'Sign Violation','SIGN_VIOLATION':'Sign Violation','SIGN-VIOLATIONS':'Sign Violation','SIGN_VIOLATIONS':'Sign Violation','FOLLOWING-DISTANCE':'Following Distance','FOLLOWING_DISTANCE':'Following Distance','AGGREGATED_LANE_SWERVING':'Lane Swerving','AGGREGATED-LANE-SWERVING':'Lane Swerving','LANE-DEPARTURE':'Lane Departure','LANE_DEPARTURE':'Lane Departure','FORWARD-CAMERA-OBSTRUCTION':'Camera Obstruction','FORWARD_CAMERA_OBSTRUCTION':'Camera Obstruction','BACKING':'Backing','BACKING_EVENT':'Backing','DRIVER-DROWSINESS':'Driver Drowsiness','DRIVER_DROWSINESS':'Driver Drowsiness','DRIVER-DISTRACTION':'Driver Distraction','DRIVER_DISTRACTION':'Driver Distraction','SPEEDING-VIOLATIONS':'Speeding','SPEEDING_VIOLATIONS':'Speeding','SPEEDING-VIOLATION':'Speeding','SPEEDING_VIOLATION':'Speeding','HARD-TURN':'Hard Turn','HARD_TURN':'Hard Turn','TRAFFIC-LIGHT-VIOLATION':'Traffic Light Violation','TRAFFIC_LIGHT_VIOLATION':'Traffic Light Violation','DRIVER-STAR':'Driver Star','DRIVER_STAR':'Driver Star'};
+function getLabel(type){return TL[type]||TL[String(type).toUpperCase().replace(/ /g,'-')]||type;}
+
+function parseDate(s){
+  var p=String(s||'').split(' ')[0].split('/');
+  if(p.length<3)return null;
+  var mo=parseInt(p[0]),day=parseInt(p[1]),yr=parseInt(p[2]);
+  if(yr<100)yr+=2000;
+  return (isNaN(mo)||isNaN(day)||isNaN(yr))?null:new Date(yr,mo-1,day);
 }
 
-function closeModal(){document.getElementById('driverModal').style.display='none';}
-document.getElementById('driverModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+function attr(n,v){return ' '+n+'="'+v+'"';}
+function tag(t,attrs,inner){return '<'+t+attrs+'>'+(inner||'')+'</'+t+'>';}
+function stag(t,attrs){return '<'+t+attrs+'/>';}
+
+function drawBar(id,labels,vals){
+  var W=320,H=155,PL=26,PR=8,PT=8,PB=38;
+  var cw=W-PL-PR,ch=H-PT-PB;
+  var maxv=1;
+  for(var i=0;i<vals.length;i++)if(vals[i]>maxv)maxv=vals[i];
+  var n=labels.length||1,slotW=cw/n,bw=Math.max(2,slotW*0.65);
+  var out='';
+  for(var g=0;g<=4;g++){
+    var gy=PT+ch-(ch*g/4),gv=Math.round(maxv*g/4);
+    out+=stag('line',attr('x1',PL)+attr('y1',gy)+attr('x2',W-PR)+attr('y2',gy)+attr('stroke','rgba(255,255,255,0.06)')+attr('stroke-width','1'));
+    out+=tag('text',attr('x',PL-2)+attr('y',gy+3)+attr('fill','#7a94b4')+attr('font-size','7')+attr('text-anchor','end'),gv);
+  }
+  var step=Math.ceil(n/12);
+  for(var i=0;i<n;i++){
+    var bh=vals[i]/maxv*ch,bx=PL+(i*slotW)+(slotW-bw)/2,by=PT+ch-bh;
+    out+=stag('rect',attr('x',bx)+attr('y',by)+attr('width',bw)+attr('height',bh)+attr('fill','rgba(232,160,32,0.85)')+attr('rx','2'));
+    if(i%step===0){
+      var lx=bx+bw/2,ly=H-PB+10;
+      out+=tag('text',attr('x',lx)+attr('y',ly)+attr('fill','#7a94b4')+attr('font-size','7')+attr('text-anchor','middle')+attr('transform','rotate(-40 '+lx+' '+ly+')'),labels[i]);
+    }
+  }
+  document.getElementById(id).innerHTML=tag('svg',attr('viewBox','0 0 '+W+' '+H)+attr('xmlns','http://www.w3.org/2000/svg')+attr('style','width:100%;display:block;'),out);
+}
+
+function drawDonut(id,labels,vals,colors){
+  var total=0;
+  for(var i=0;i<vals.length;i++)total+=vals[i];
+  if(!total)total=1;
+  var cx=100,cy=85,R=62,ir=38,W=200,H=170;
+  var out='';
+  var angle=-Math.PI/2;
+  for(var i=0;i<vals.length;i++){
+    var sweep=vals[i]/total*Math.PI*2,a2=angle+sweep;
+    var x1=cx+R*Math.cos(angle),y1=cy+R*Math.sin(angle);
+    var x2=cx+R*Math.cos(a2),y2=cy+R*Math.sin(a2);
+    var xi1=cx+ir*Math.cos(angle),yi1=cy+ir*Math.sin(angle);
+    var xi2=cx+ir*Math.cos(a2),yi2=cy+ir*Math.sin(a2);
+    var lg=sweep>Math.PI?1:0;
+    var d='M '+x1+' '+y1+' A '+R+' '+R+' 0 '+lg+' 1 '+x2+' '+y2+' L '+xi2+' '+yi2+' A '+ir+' '+ir+' 0 '+lg+' 0 '+xi1+' '+yi1+' Z';
+    out+=stag('path',attr('d',d)+attr('fill',colors[i])+attr('stroke','#162840')+attr('stroke-width','2'));
+    angle=a2;
+  }
+  out+=tag('text',attr('x',cx)+attr('y',cy-4)+attr('fill','#e8edf5')+attr('font-size','18')+attr('font-weight','bold')+attr('text-anchor','middle')+attr('font-family','sans-serif'),total);
+  out+=tag('text',attr('x',cx)+attr('y',cy+12)+attr('fill','#7a94b4')+attr('font-size','8')+attr('text-anchor','middle'),'TOTAL');
+  var svgEl=tag('svg',attr('viewBox','0 0 '+W+' '+H)+attr('xmlns','http://www.w3.org/2000/svg')+attr('style','width:100%;max-width:260px;display:block;margin:0 auto;'),out);
+  var leg='<div style="display:flex;flex-wrap:wrap;gap:6px 10px;margin-top:8px;justify-content:center;">';
+  for(var j=0;j<labels.length;j++){
+    leg+='<div style="display:flex;align-items:center;gap:4px;font-size:10px;color:#7a94b4;"><div style="width:8px;height:8px;border-radius:50%;background:'+colors[j]+';flex-shrink:0;"></div>'+labels[j]+'</div>';
+  }
+  leg+='</div>';
+  document.getElementById(id).innerHTML=svgEl+leg;
+}
+
+var currentEvts=[];
+var currentFilter='all';
+var allFilteredEvts=[];
+
+function render(evts){
+  currentEvts=evts;
+  var co=0,uv=0,tct={},drvSet={};
+  for(var i=0;i<evts.length;i++){
+    var e=evts[i],cv=e['Converted To Coaching'];
+    var coached=(cv==='YES'||cv==='Yes');
+    if(coached){co++;if(!e['Coaching Completed At'])uv++;}
+    if(e.Type)tct[e.Type]=(tct[e.Type]||0)+1;
+    if(e.Driver)drvSet[e.Driver]=1;
+  }
+  var dc=Object.keys(drvSet).length;
+  var vr=co>0?Math.round((co-uv)/co*100):0;
+  var avg=dc>0?(evts.length/dc).toFixed(1):'--';
+  var topType=null,topCount=0;
+  for(var t in tct){if(tct[t]>topCount){topCount=tct[t];topType=t;}}
+
+  // KPI 1 — total events + coached sub
+  document.getElementById('kT').textContent=evts.length;
+  document.getElementById('kpiDateRange').innerHTML='<b>'+co+'</b> coached';
+
+  // KPI 2 — viewed % big, "X of Y viewed" sub (matches Apple)
+  document.getElementById('kU').textContent=vr+'%';
+  document.getElementById('kVR').innerHTML='<b>'+co+'</b> of '+evts.length+' viewed';
+
+  // KPI 3 — avg events/driver
+  document.getElementById('kA').textContent=avg;
+  document.getElementById('kAS').innerHTML='<b>'+dc+'</b> active drivers';
+
+  // KPI 4 — event name big, count sub (matches Apple)
+  if(topType){
+    document.getElementById('kMC').style.cssText='font-size:28px;padding-top:6px;line-height:1.2;';
+    document.getElementById('kMC').textContent=getLabel(topType);
+    document.getElementById('kMT').innerHTML='<b>'+topCount+'</b> events';
+  }
+
+  // Bar chart by week
+  var wk={};
+  evts.forEach(function(e){
+    if(!e._d)return;
+    var sun=new Date(e._d);sun.setDate(sun.getDate()-sun.getDay());
+    var mo=sun.getMonth()+1,dy=sun.getDate();
+    var k=(mo<10?'0':'')+mo+'/'+(dy<10?'0':'')+dy;
+    wk[k]=(wk[k]||0)+1;
+  });
+  var wkeys=Object.keys(wk).sort();
+  drawBar('barWrap',wkeys,wkeys.map(function(k){return wk[k];}));
+
+  var tkeys=Object.keys(tct).sort(function(a,b){return tct[b]-tct[a];});
+  drawDonut('donutWrap',tkeys.map(function(t){return getLabel(t);}),tkeys.map(function(t){return tct[t];}),tkeys.map(function(t){return getColor(t);}));
+
+  // Driver table — matches Apple: Driver / Total / Viewed columns
+  var dd={};
+  for(var i=0;i<evts.length;i++){
+    var e=evts[i];if(!e.Driver)continue;
+    if(!dd[e.Driver])dd[e.Driver]={total:0,coached:0,needs:0};
+    dd[e.Driver].total++;
+    var cv=e['Converted To Coaching'];
+    var coached=(cv==='YES'||cv==='Yes');
+    if(coached)dd[e.Driver].coached++;
+    else dd[e.Driver].needs++;
+  }
+  var rows=Object.keys(dd).sort(function(a,b){return dd[b].total-dd[a].total;});
+  var ths='font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#7a94b4;padding:8px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.08);';
+  var tds='padding:10px;border-bottom:1px solid rgba(255,255,255,0.04);font-size:14px;';
+  var th='<table style="width:100%;border-collapse:collapse;"><thead><tr>'
+    +'<th style="'+ths+'">Driver</th>'
+    +'<th style="'+ths+'">Total</th>'
+    +'<th style="'+ths+'">Viewed</th>'
+    +'</tr></thead><tbody>';
+  rows.forEach(function(n){
+    var d=dd[n],badge;
+    if(d.needs>0)badge='<span style="font-size:16px;font-weight:700;color:#f5a623;">'+d.needs+'</span>';
+    else badge='<span style="font-size:18px;color:#3db87a;">&#10003;</span>';
+    th+='<tr class="drv-row" data-name="'+n.replace(/"/g,'&quot;')+'" style="cursor:pointer;">'
+      +'<td style="'+tds+'">'+n+'</td>'
+      +'<td style="'+tds+';font-size:22px;font-weight:700;color:#e8a020;">'+d.total+'</td>'
+      +'<td style="'+tds+'">'+badge+'</td>'
+      +'</tr>';
+  });
+  th+='</tbody></table>';
+  document.getElementById('drvWrap').innerHTML=th;
+  document.getElementById('drvWrap').querySelectorAll('.drv-row').forEach(function(row){
+    row.addEventListener('mouseover',function(){this.style.background='rgba(255,255,255,0.04)';});
+    row.addEventListener('mouseout',function(){this.style.background='';});
+    row.addEventListener('click',function(){showDriverModal(this.getAttribute('data-name'));});
+  });
+
+  // Event log — matches Apple: EventType bold + Driver · Date inline, 14px
+  var sorted=evts.slice().sort(function(a,b){return(b._d||0)-(a._d||0);}).slice(0,50);
+  var lh='';
+  sorted.forEach(function(e){
+    var ds=e._d?e._d.toLocaleDateString('en-US',{month:'short',day:'numeric'}):'';
+    lh+='<div style="display:flex;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.04);">';
+    lh+='<div style="font-size:14px;font-weight:600;white-space:nowrap;">'+getLabel(e.Type||'Unknown')+'</div>';
+    lh+='<div style="font-size:14px;color:#7a94b4;margin-left:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+(e.Driver||'Unidentified')+' &middot; '+ds+'</div>';
+    lh+='</div>';
+  });
+  document.getElementById('evLog').innerHTML=lh;
+}
+function dedupKey(e){
+  return [e.Datetime||'',e.Driver||'',e.Type||'',e['Netradyne Id']||e.Location||''].join('|');
+}
+
+function loadStored(){
+  try{
+    var raw=localStorage.getItem('den_events');
+    if(!raw)return [];
+    var arr=JSON.parse(raw);
+    // Re-attach _d date objects (they serialize as strings)
+    for(var i=0;i<arr.length;i++) arr[i]._d=parseDate(arr[i].Datetime);
+    return arr;
+  }catch(e){return [];}
+}
+
+function saveStored(evts){
+  try{
+    // Strip _d before storing (can't serialize Date, will re-parse on load)
+    var toSave=evts.map(function(e){
+      var o=Object.assign({},e);
+      delete o._d;
+      return o;
+    });
+    localStorage.setItem('den_events',JSON.stringify(toSave));
+  }catch(e){console.warn('Storage full or unavailable',e);}
+}
+
+
+function renderWithDateFilter(allEvts){
+  var end=new Date();end.setDate(end.getDate()-3);
+  var start=new Date(end);start.setDate(start.getDate()-30);
+  var tr=allEvts.filter(function(e){
+    var cv=e['Converted To Coaching'];
+    return e._d&&e._d>=start&&e._d<=end&&(cv==='YES'||cv==='Yes');
+  });
+  allFilteredEvts=tr;
+  applyFilter();
+  var fmt=function(x){return x.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'2-digit'});};
+  document.getElementById('periodBadge').innerHTML='<b>'+fmt(start)+'</b> – <b>'+fmt(end)+'</b>';
+  return tr.length;
+}
+
+function applyFilter(){
+  var evts;
+  if(currentFilter==='Coached'){
+    evts=allFilteredEvts.filter(function(e){var cv=e['Converted To Coaching'];return cv==='YES'||cv==='Yes';});
+  } else if(currentFilter==='Needs Coaching'){
+    evts=allFilteredEvts.filter(function(e){var cv=e['Converted To Coaching'];return (cv==='YES'||cv==='Yes')&&!e['Coaching Completed At'];});
+  } else {
+    evts=allFilteredEvts;
+  }
+  render(evts);
+}
+
+function processFile(file){
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    try{
+      var wb=XLSX.read(ev.target.result,{type:'array'});
+      var ws=wb.Sheets[wb.SheetNames[0]];
+      var raw=XLSX.utils.sheet_to_json(ws,{header:1});
+      var hi=-1;
+      for(var i=0;i<raw.length;i++){if(raw[i]&&raw[i][0]==='Datetime'){hi=i;break;}}
+      if(hi<0)hi=2;
+      var hdrs=raw[hi],newEvts=[];
+      for(var i=hi+1;i<raw.length;i++){
+        if(!raw[i]||!raw[i][0])continue;
+        var o={};for(var j=0;j<hdrs.length;j++)o[hdrs[j]]=raw[i][j];
+        o._d=parseDate(o.Datetime);
+        newEvts.push(o);
+      }
+      // Merge with stored data, dedup by key
+      var stored=loadStored();
+      var seen={};
+      for(var i=0;i<stored.length;i++) seen[dedupKey(stored[i])]=true;
+      var added=0;
+      for(var i=0;i<newEvts.length;i++){
+        var k=dedupKey(newEvts[i]);
+        if(!seen[k]){stored.push(newEvts[i]);seen[k]=true;added++;}
+      }
+      saveStored(stored);
+      var shown=renderWithDateFilter(stored);
+      var st=document.getElementById('upSt');st.style.display='block';
+      st.textContent='✓ '+file.name+' — '+added+' new events added ('+stored.length+' total stored)';
+    }catch(err){alert('Error: '+err.message);}
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+document.getElementById('fileIn').addEventListener('change',function(e){if(e.target.files[0])processFile(e.target.files[0]);});
+document.getElementById('uploadBtn').addEventListener('click',function(e){e.stopPropagation();document.getElementById('fileIn').click();});
+var upZ=document.getElementById('upZ');
+upZ.addEventListener('dragover',function(e){e.preventDefault();upZ.style.borderColor='#e8a020';});
+upZ.addEventListener('dragleave',function(){upZ.style.borderColor='#244a72';});
+upZ.addEventListener('drop',function(e){e.preventDefault();upZ.style.borderColor='#244a72';if(e.dataTransfer.files[0])processFile(e.dataTransfer.files[0]);});
+
+
+
+
+</script>
+<script>
+
+function showDriverModal(name) {
+  var evts = currentEvts.filter(function(e) { return e.Driver === name; });
+  var tct = {}, co = 0, uv = 0;
+  for (var i = 0; i < evts.length; i++) {
+    var e = evts[i];
+    if (e.Type) tct[e.Type] = (tct[e.Type] || 0) + 1;
+    var cv = e['Converted To Coaching'];
+    if (cv === 'YES' || cv === 'Yes') {
+      co++;
+      if (!e['Coaching Completed At']) uv++;
+    }
+  }
+  document.getElementById('modalDriverName').textContent = name;
+
+  var sbox = 'background:#162840;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px;text-align:center;';
+  var slbl = 'font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:#7a94b4;margin-bottom:4px;';
+  var sval = 'font-family:sans-serif;font-size:28px;font-weight:900;';
+  var sc = [{lbl:'Total Events',val:evts.length,col:'#e8a020'},{lbl:'Coached',val:co,col:'#5b8dee'},{lbl:'Viewed',val:co-uv,col:'#3db87a'}];
+  var sh = '';
+  for (var i = 0; i < sc.length; i++) {
+    sh += '<div style="' + sbox + '"><div style="' + slbl + '">' + sc[i].lbl + '</div><div style="' + sval + 'color:' + sc[i].col + ';">' + sc[i].val + '</div></div>';
+  }
+  document.getElementById('modalStats').innerHTML = sh;
+
+  var tkeys = Object.keys(tct).sort(function(a,b){return tct[b]-tct[a];});
+  var total = evts.length || 1;
+  var cx=110,cy=95,R=68,ir=42,W=220,H=190;
+  var out = '';
+  var angle = -Math.PI/2;
+  for (var i = 0; i < tkeys.length; i++) {
+    var cnt = tct[tkeys[i]];
+    var sweep = tkeys.length === 1 ? Math.PI*2*0.9999 : cnt/total*Math.PI*2;
+    var a2 = angle + sweep;
+    var x1=cx+R*Math.cos(angle), y1=cy+R*Math.sin(angle);
+    var x2=cx+R*Math.cos(a2),   y2=cy+R*Math.sin(a2);
+    var xi1=cx+ir*Math.cos(angle), yi1=cy+ir*Math.sin(angle);
+    var xi2=cx+ir*Math.cos(a2),    yi2=cy+ir*Math.sin(a2);
+    var lg = sweep > Math.PI ? 1 : 0;
+    var d = 'M '+x1+' '+y1+' A '+R+' '+R+' 0 '+lg+' 1 '+x2+' '+y2+' L '+xi2+' '+yi2+' A '+ir+' '+ir+' 0 '+lg+' 0 '+xi1+' '+yi1+' Z';
+    var col = getColor(tkeys[i]);
+    out += '<path d="' + d + '" fill="' + col + '" stroke="#1a3a5c" stroke-width="2"/>';
+    var mid = angle + sweep/2;
+    var lx = cx + (R+ir)/2*Math.cos(mid);
+    var ly = cy + (R+ir)/2*Math.sin(mid);
+    if (sweep > 0.3) {
+      out += '<text x="' + lx + '" y="' + (ly+4) + '" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle" font-family="sans-serif">' + cnt + '</text>';
+    }
+    angle = a2;
+  }
+  out += '<text x="' + cx + '" y="' + (cy-4) + '" fill="#e8edf5" font-size="18" font-weight="bold" text-anchor="middle" font-family="sans-serif">' + evts.length + '</text>';
+  out += '<text x="' + cx + '" y="' + (cy+12) + '" fill="#7a94b4" font-size="8" text-anchor="middle">TOTAL</text>';
+  var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:280px;display:block;margin:0 auto;">' + out + '</svg>';
+
+  var leg = '<div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;">';
+  for (var i = 0; i < tkeys.length; i++) {
+    var pct = Math.round(tct[tkeys[i]]/total*100);
+    var col = getColor(tkeys[i]);
+    leg += '<div style="display:flex;align-items:center;gap:8px;">';
+    leg += '<div style="width:10px;height:10px;border-radius:3px;background:' + col + ';flex-shrink:0;"></div>';
+    leg += '<div style="flex:1;font-size:11px;color:#e8edf5;">' + getLabel(tkeys[i]) + '</div>';
+    leg += '<div style="font-size:14px;font-weight:700;color:#fff;">' + tct[tkeys[i]] + '</div>';
+    leg += '<div style="font-size:10px;color:#7a94b4;width:30px;text-align:right;">' + pct + '%</div>';
+    leg += '</div>';
+  }
+  leg += '</div>';
+
+  document.getElementById('modalChart').innerHTML = svg + leg;
+  document.getElementById('driverModal').style.display = 'flex';
+}
+
+function closeDriverModal() {
+  document.getElementById('driverModal').style.display = 'none';
+}
+
+document.getElementById('adminUnlockBtn').addEventListener('click', function() {
+  var pw = prompt('Enter admin password:');
+  if (pw === 'synergy') {
+    document.getElementById('adminPanel').style.display = 'block';
+    document.getElementById('adminUnlockBtn').style.display = 'none';
+  } else if (pw !== null) {
+    alert('Incorrect password.');
+  }
+});
+
+document.getElementById('clearBtn').addEventListener('click', function() {
+  if (!confirm('Clear all stored event data?')) return;
+  localStorage.removeItem('den_events');
+  currentEvts = [];
+  document.getElementById('kT').textContent = '--';
+  document.getElementById('kU').textContent = '--';
+  document.getElementById('kVR').textContent = 'viewing rate';
+  document.getElementById('kA').textContent = '--';
+  document.getElementById('kAS').textContent = 'active drivers';
+  document.getElementById('kMC').textContent = '--';
+  document.getElementById('kMT').textContent = '--';
+  document.getElementById('barWrap').innerHTML = '';
+  document.getElementById('donutWrap').innerHTML = '';
+  document.getElementById('drvWrap').innerHTML = '<p style="text-align:center;padding:24px;color:#7a94b4;font-size:12px;">Import a file to see data</p>';
+  document.getElementById('evLog').innerHTML = '<p style="text-align:center;padding:24px;color:#7a94b4;font-size:12px;">Import a file to see events</p>';
+  document.getElementById('periodBadge').innerHTML = 'No Data';
+  document.getElementById('upSt').style.display = 'none';
+});
+
+document.getElementById('driverModal').addEventListener('click', function(e) {
+  if (e.target === this) closeDriverModal();
+});
+
+// On load: fetch GitHub file, merge with localStorage, render
+function fetchAndMerge(onDone) {
+  if (typeof XLSX === 'undefined') {
+    var e = document.getElementById('loadErr');
+    e.style.display = 'block';
+    e.innerHTML = 'Error: Excel library failed to load.<br>Please check your internet connection and refresh.';
+    return;
+  }
+  var st = document.getElementById('upSt');
+  st.style.display = 'block';
+  st.textContent = 'Fetching latest data from GitHub...';
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', GITHUB_URL, true);
+  xhr.responseType = 'arraybuffer';
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      try {
+        var wb = XLSX.read(xhr.response, {type: 'array'});
+        var ws = wb.Sheets[wb.SheetNames[0]];
+        var raw = XLSX.utils.sheet_to_json(ws, {header: 1});
+        var hi = -1;
+        for (var i = 0; i < raw.length; i++) { if (raw[i] && raw[i][0] === 'Datetime') { hi = i; break; } }
+        if (hi < 0) hi = 2;
+        var hdrs = raw[hi], newEvts = [];
+        for (var i = hi + 1; i < raw.length; i++) {
+          if (!raw[i] || !raw[i][0]) continue;
+          var o = {}; for (var j = 0; j < hdrs.length; j++) o[hdrs[j]] = raw[i][j];
+          o._d = parseDate(o.Datetime);
+          newEvts.push(o);
+        }
+        saveStored(newEvts);
+        renderWithDateFilter(newEvts);
+        st.textContent = '✓ GitHub sync: up to date (' + newEvts.length + ' total events)';
+      } catch(e) {
+        st.textContent = 'Error reading GitHub file: ' + e.message;
+        loadLocal();
+      }
+    } else {
+      st.textContent = 'Could not reach GitHub (status ' + xhr.status + ') — loading local data';
+      loadLocal();
+    }
+    if (onDone) onDone();
+  };
+  xhr.onerror = function() {
+    st.textContent = 'Could not reach GitHub — loading local data';
+    loadLocal();
+    if (onDone) onDone();
+  };
+  xhr.send();
+}
+
+function loadLocal() {
+  var stored = loadStored();
+  if (stored.length > 0) {
+    renderWithDateFilter(stored);
+    document.getElementById('upSt').style.display = 'block';
+    document.getElementById('upSt').textContent = stored.length + ' events loaded from local storage';
+  }
+}
+
 
 document.getElementById('filterBar').addEventListener('click',function(e){
   var btn=e.target.closest('.filter-btn');
@@ -201,6 +611,9 @@ document.getElementById('filterBar').addEventListener('click',function(e){
   currentFilter=btn.getAttribute('data-filter');
   applyFilter();
 });
+
+fetchAndMerge();
+document.getElementById('clientNameDisplay').textContent = CLIENT_NAME;
 
 </script>
 </body>
